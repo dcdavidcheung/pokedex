@@ -144,11 +144,12 @@ from stats import get_pokedex
 # atlastk.launch(callbacks, Core, open("Head.html").read())
 
 import atlastk
+import re
 
 cwd = os.getcwd()
 BODY = """
 <fieldset style="background-color:#F5F5DC;">
-  <span id="pokemon" style="width: 300px; height: 300px;"></span>
+  <span id="pokemon" style="width: 100px; height: 100px;"></span>
   <input id="Input" xdh:onevent="Enter" value=""/>
   <button xdh:onevent="Enter">Press to enter name</button>
   <hr/>
@@ -158,25 +159,28 @@ BODY = """
 </fieldset>
 </body>
 """
-
+#<svg viewBox="0 0 60 55" width="200" height="100">
 POKEDEX_ENTRY = """
 <output id="Name"></output>
-<fieldset>
-  <span id="pokemon" style="width: 300px; height: 300px;"></span>
+<fieldset style="background-color:#F5F5DC;">
+  <span id="pokemon" style="width: 100px; height: 100px;"></span>
 </fieldset>
 <fieldset>
   <input id="Input" xdh:onevent="Enter" value=""/>
   <button xdh:onevent="Enter">Press to enter name</button>
-  <button xdh:onevent="Shiny">Press for Shiny</button>
+  <button xdh:onevent="Shiny">Press to toggle shiny forme</button>
 </fieldset>
 """
 # global CURRENT
 CURRENT = "bulbasaur"
+SHINY = False
 
 pokedex = get_pokedex()
 pokedex.make_dict()
-print(pokedex.pokemon_dict['Eevee'].nat_dex_num)
-print(pokedex.pokemon_dict['Wooloo'].nat_dex_num)
+# print(pokedex.pokemon_dict['Eevee'].nat_dex_num)
+# print(pokedex.pokemon_dict['Wooloo'].nat_dex_num)
+pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
+print(pokemon[:150])
 def acConnect(dom):
   dom.inner("", BODY)
   # pokemon = open("../svg_sprites/bulbasaur.svg").read()
@@ -184,12 +188,28 @@ def acConnect(dom):
   # dom.inner("pokemon", pokemon)
   # pokemon = open("../svg_sprites/bulbasaur.svg").read()
   # dom.inner("pokemon1", pokemon)
+  # Change width and height
   pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
+  width_re = r'width="[0-9]+"'
+  height_re = r'height="[0-9]+"'
+  compiled_w = re.compile(width_re)
+  compiled_h = re.compile(height_re)
+  # searches = re.search(width_re, pokemon)
+  pokemon = compiled_w.sub('width=100%', pokemon)
+  pokemon = compiled_h.sub('height=100%', pokemon)
+
+  # Results of the following lines: "<svg" only occurs once at index 39
+  # print(pokemon.find("<svg"))
+  # print(re.findall(r"<svg", pokemon))
+
+
   dom.inner("pokemon", pokemon)
   dom.focus("Input")
 
 def goToMon(dom):
   global CURRENT
+  global SHINY
+  SHINY = False
   name = dom.get_value("Input")
   # Assuming user will spell name correctly right now, not much user sanitization
   # poke_name = name.lower()
@@ -201,7 +221,8 @@ def goToMon(dom):
     poke_name = "-".join(name.strip().lower().split(" ")) # Deal with name edge cases
     CURRENT = poke_name
     # pokemon = open(f"../svg_sprites/{poke_name}.svg").read()
-    pokemon = open(f"../own_converted/{poke_name}.svg").read()
+    # pokemon = open(f"../own_converted/{poke_name}.svg").read()
+    pokemon = open(f"../serebii_normal_svg/{CURRENT}.svg").read()
     dom.inner("pokemon", pokemon)
     capped = poke_name[0].upper()+poke_name[1:]
     dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
@@ -219,19 +240,37 @@ def shiny(dom):
   # Assuming user will spell name correctly right now, not much user sanitization
   # poke_name = name.lower()
   # poke_name = "-".join(name.strip().lower().split(" ")) # Deal with name edge cases
-  dom.inner("", POKEDEX_ENTRY)
+  global SHINY
+  if SHINY:
+    SHINY = False
+    dom.inner("", POKEDEX_ENTRY)
 
-  try:
-    pokemon = open(f"../serebii_shiny_svg/{CURRENT}_s.svg").read()
-    dom.inner("pokemon", pokemon)
-  except:
-    pokemon = open(f"../svg_sprites/eevee.svg").read()
-    dom.inner("pokemon", pokemon)
-  capped = CURRENT[0].upper()+CURRENT[1:]
-  dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
-  
-  dom.set_value("Input", "")
-  dom.focus("Input")
+    try:
+      pokemon = open(f"../serebii_normal_svg/{CURRENT}.svg").read()
+      dom.inner("pokemon", pokemon)
+    except:
+      pokemon = open(f"../svg_sprites/eevee.svg").read()
+      dom.inner("pokemon", pokemon)
+    capped = CURRENT[0].upper()+CURRENT[1:]
+    dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
+    
+    dom.set_value("Input", "")
+    dom.focus("Input")
+  else:
+    SHINY = True
+    dom.inner("", POKEDEX_ENTRY)
+
+    try:
+      pokemon = open(f"../serebii_shiny_svg/{CURRENT}_s.svg").read()
+      dom.inner("pokemon", pokemon)
+    except:
+      pokemon = open(f"../svg_sprites/eevee.svg").read()
+      dom.inner("pokemon", pokemon)
+    capped = CURRENT[0].upper()+CURRENT[1:]
+    dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
+    
+    dom.set_value("Input", "")
+    dom.focus("Input")
 
 def test(dom):
   name = dom.get_value("Input")
