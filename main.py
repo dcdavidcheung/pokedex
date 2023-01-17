@@ -179,8 +179,8 @@ pokedex = get_pokedex()
 pokedex.make_dict()
 # print(pokedex.pokemon_dict['Eevee'].nat_dex_num)
 # print(pokedex.pokemon_dict['Wooloo'].nat_dex_num)
-pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
-print(pokemon[:150])
+# pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
+# print(pokemon[:150])
 def acConnect(dom):
   dom.inner("", BODY)
   # pokemon = open("../svg_sprites/bulbasaur.svg").read()
@@ -189,14 +189,36 @@ def acConnect(dom):
   # pokemon = open("../svg_sprites/bulbasaur.svg").read()
   # dom.inner("pokemon1", pokemon)
   # Change width and height
-  pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
-  width_re = r'width="[0-9]+"'
-  height_re = r'height="[0-9]+"'
-  compiled_w = re.compile(width_re)
-  compiled_h = re.compile(height_re)
-  # searches = re.search(width_re, pokemon)
-  pokemon = compiled_w.sub('width=100%', pokemon)
-  pokemon = compiled_h.sub('height=100%', pokemon)
+  # pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
+  pokemon = open("../test2.svg").read()
+
+  # Regular expressions attempt to change width and height
+  # Only scales box arounf svg, doesn't change the paths so doesn't resize image
+  # width_re = r'width="[0-9]+"'
+  # height_re = r'height="[0-9]+"'
+  # compiled_w = re.compile(width_re)
+  # compiled_h = re.compile(height_re)
+  # # searches = re.search(width_re, pokemon)
+  # pokemon = compiled_w.sub('width=500', pokemon)
+  # pokemon = compiled_h.sub('height=500 preserveAspectRatio="none"', pokemon)
+  print(pokemon[:2000])
+
+  # Divide everything by n attempt
+  # Did not work
+  # split = pokemon.split(" ")
+  # for i in range(len(split)):
+  #   try:
+  #     split[i] = f'{float(split[i])/4}'
+  #   except:
+  #     try:
+  #       if split[i][0] == "C":
+  #         split[i] = f'C{float(split[i][1:])/4}'
+  #       else:
+  #         split[i] = split[i]
+  #     except:
+  #       continue
+  # pokemon = " ".join(split)
+  # print(pokemon[:2000])
 
   # Results of the following lines: "<svg" only occurs once at index 39
   # print(pokemon.find("<svg"))
