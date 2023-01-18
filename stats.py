@@ -110,7 +110,7 @@ class Pkmn_Data(object):
     def add_alt_forme(self, prior_num, alt_formes_list):
         # Pokemon in list will be offset by 1, prior_num in pokdex_number is 1 more
         if (prior_num != 0 and alt_formes_list != []):
-            self.pokemon_list.add_alt_forme(alt_formes_list)
+            self.pokemon_list[-1].add_alt_forme(alt_formes_list)
 
     def make_dict(self):
         for pokemon in self.pokemon_list:
@@ -263,6 +263,7 @@ def parse_data(filename='pokemon.csv'):
             else:
                 # When reaching next pokemon, we need to add the alt formes list to the last pokemon in the list
                 pokedex.add_alt_forme(int(pokemon_num)-1, alt_formes)
+                added_numbers.add(pokemon_num)
 
                 # Clear the alt formes list
                 alt_formes = []
@@ -278,7 +279,8 @@ def get_pokedex(filedata='pokemon.csv'):
 
 if __name__ == "__main__":
     pokedex = parse_data()
-    print(pokedex.get_avg_stat())
+    # for i in pokedex.pokemon_list[:25]:
+    #     print(i.name)
 
 
 
