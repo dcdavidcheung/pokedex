@@ -7,7 +7,8 @@ Search bar for pokemon's name does no sanitization and fail into eevee image
 Need main screen to allow user to select which feature to use  
 Height comparison, ability to add, change, and remove pokemon  
 Completed pokedex entry  
-Guess that pokemon with black silohette  
+Guess that pokemon with black silhouette  
+Guess that pokemon with negative space (Allow user to see some features => easier version)  
 Guess the shiny with differing color shading  
 Display all pokemon of a certain type  
 Be able to use session cookies to store longest streak of correct answers for guessing features, independent scores  

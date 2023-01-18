@@ -49,6 +49,13 @@ for pokemon in pokedex.pokemon_list:
     # os.system(f"./vtracer --input ./../open_source_repos/Pokemon/assets/imagesHQ/{convert_to_3_digit_string(pokemon.nat_dex_num)}.png --output ../own_converted/{pokemon.name.lower()}.svg")
     # os.system(f"./vtracer --input ./../open_source_repos/Pokemon/src/imageDownloader/serebii_download/{convert_to_3_digit_string(pokemon.nat_dex_num)}.png --output ../serebii_shiny_svg/{pokemon.name.lower()}_s.svg")
     # os.system(f"./vtracer --input ./../open_source_repos/Pokemon/src/imageDownloader/normal/{convert_to_3_digit_string(pokemon.nat_dex_num)}.png --output ../serebii_normal_svg/{pokemon.name.lower()}.svg")
+
+    # Shinies
     os.system(f"./vtracer --input ./../open_source_repos/Pokemon/src/imageDownloader/serebii_download/{convert_to_3_digit_string(pokemon.nat_dex_num)}.png --output ../serebii_shiny_svg/{name_converter(pokemon.name)}_s.svg -f 1 -p 8 -g 64 -c 64 -l 4 -s 64")
+    # Normal
     os.system(f"./vtracer --input ./../open_source_repos/Pokemon/src/imageDownloader/normal/{convert_to_3_digit_string(pokemon.nat_dex_num)}.png --output ../serebii_normal_svg/{name_converter(pokemon.name)}.svg -f 1 -p 8 -g 64 -c 64 -l 4 -s 64")
+    # Gray scale
+    os.system(f"./vtracer --input ./../open_source_repos/Pokemon/src/imageDownloader/normal/{convert_to_3_digit_string(pokemon.nat_dex_num)}.png --output ../serebii_normal_svg/{name_converter(pokemon.name)}.svg -f 1 -p 8 -g 64 -c 64 -l 4 -s 64")
+    # Black silhouette
+    # Shiny variants
 # os.system("rm vtracer")

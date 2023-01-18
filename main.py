@@ -190,7 +190,8 @@ def acConnect(dom):
   # dom.inner("pokemon1", pokemon)
   # Change width and height
   # pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
-  pokemon = open("../test2.svg").read()
+  # pokemon = open("../test2.svg").read()
+  pokemon = open("../bw_bulb.svg").read()
 
   # Regular expressions attempt to change width and height
   # Only scales box arounf svg, doesn't change the paths so doesn't resize image
@@ -201,7 +202,7 @@ def acConnect(dom):
   # # searches = re.search(width_re, pokemon)
   # pokemon = compiled_w.sub('width=500', pokemon)
   # pokemon = compiled_h.sub('height=500 preserveAspectRatio="none"', pokemon)
-  print(pokemon[:2000])
+  # print(pokemon[:2000])
 
   # Divide everything by n attempt
   # Did not work
