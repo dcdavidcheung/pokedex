@@ -193,6 +193,8 @@ class Pkmn(object):
         try:self.weight     =        float(self.init_info['weight_kg'])
         except:self.weight  =              None
         self.type_matchups  = get_matchups(self.type_1, self.type_2)
+        self.weaknesses     =  get_weaknesses(self.type_matchups)
+        self.resistances    = get_resistances(self.type_matchups)
 
     def add_alt_forme(self, alt_formes_list):
         self.alt_formes = alt_formes_list
@@ -277,10 +279,34 @@ def parse_data(filename='pokemon.csv'):
 def get_pokedex(filedata='pokemon.csv'):
     return parse_data(filedata)
 
+def reverse_dict(D):
+    new_D = {}
+    for key in D:
+        new_D[D[key]] = key
+    return new_D
+
+ind_to_type = reverse_dict(types)
+
+def get_weaknesses(matchups):
+    L = []
+    for typing in range(len(matchups)):
+        if matchups[typing] > 1:
+            L.append(ind_to_type[typing])
+    return L
+def get_resistances(matchups):
+    L = []
+    for typing in range(len(matchups)):
+        if matchups[typing] < 1:
+            L.append(ind_to_type[typing])
+    return L
+
 if __name__ == "__main__":
-    pokedex = parse_data()
+    # pokedex = parse_data()
     # for i in pokedex.pokemon_list[:25]:
     #     print(i.name)
+    # print("Weaknesses", get_weaknesses(get_matchups("fire", "flying")))
+    # print("Resistances", get_resistances(get_matchups("fire", "flying")))
+    status = 0
 
 
 
