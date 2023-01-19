@@ -146,12 +146,24 @@ from stats import get_pokedex
 import atlastk
 import re
 
+def convert_to_3_digit_string(number):
+  number = int(number)
+  if number < 100:
+    if number < 10:
+      return "00"+str(number)
+    return "0"+str(number)
+  return str(number)
+
+def cap(s):
+  return s[0].upper()+s[1:]
+
 cwd = os.getcwd()
 BODY = """
+<body style="background-color:#F5F5DC;">
 <fieldset style="background-color:#F5F5DC;">
   <span id="pokemon" style="width: 100px; height: 100px;"></span>
   <input id="Input" xdh:onevent="Enter" value=""/>
-  <button xdh:onevent="Enter">Press to enter name</button>
+  <button xdh:onevent="Enter">Enter name</button>
   <hr/>
   <fieldset>
     <output id="Output">Type in pokemon name</output>
@@ -162,13 +174,28 @@ BODY = """
 #<svg viewBox="0 0 60 55" width="200" height="100">
 POKEDEX_ENTRY = """
 <output id="Name"></output>
+<fieldset>
+  <span id="Typing"></span>
+</fieldset>
+<fieldset>
+  <span id="Stats"></span>
+</fieldset>
 <fieldset style="background-color:#F5F5DC;">
   <span id="pokemon" style="width: 100px; height: 100px;"></span>
 </fieldset>
 <fieldset>
   <input id="Input" xdh:onevent="Enter" value=""/>
-  <button xdh:onevent="Enter">Press to enter name</button>
-  <button xdh:onevent="Shiny">Press to toggle shiny forme</button>
+  <button xdh:onevent="Enter">Enter Name</button>
+  <button xdh:onevent="Shiny">Toggle Shiny</button>
+</fieldset>
+<fieldset>
+  <span id="Weaknesses"></span>
+</fieldset>
+<fieldset>
+  <span id="Resistances"></span>
+</fieldset>
+<fieldset>
+  <span id="Alt_formes"></span>
 </fieldset>
 """
 # global CURRENT
@@ -229,6 +256,32 @@ def acConnect(dom):
   dom.inner("pokemon", pokemon)
   dom.focus("Input")
 
+def set_fields(dom, pokemon_entry):
+  dom.inner("Name", f"<div>#{convert_to_3_digit_string(pokemon_entry.nat_dex_num)} {cap(pokemon_entry.name)} (The {pokemon_entry.title})</div>")
+  dom.inner("Typing", f'<div>{pokemon_entry.type_1}<br>{pokemon_entry.type_2}</div>')
+  dom.inner("Stats", f'''<div> HP : {int(pokemon_entry.HP )}<br>
+                                ATK: {int(pokemon_entry.ATK)}<br>
+                                DEF: {int(pokemon_entry.DEF)}<br>
+                                SPA: {int(pokemon_entry.SPA)}<br>
+                                SPD: {int(pokemon_entry.SPD)}<br>
+                                SPE: {int(pokemon_entry.SPE)}</div>''')
+  weakness_field = "<div>Weaknesses:<br>"
+  for weakness in pokemon_entry.weaknesses:
+    weakness_field += f'{cap(weakness)} '
+  weakness_field += "</div>"
+  dom.inner("Weaknesses", weakness_field)
+  resistances_field = "<div>Resistances:<br>"
+  for resistance in pokemon_entry.resistances:
+    resistances_field += f'{cap(resistance)} '
+  resistances_field += "</div>"
+  dom.inner("Resistances", resistances_field)
+  alt_field = "<div>Alternate Formes:<br>"
+  if (pokemon_entry.alt_formes != None):
+    for alt in pokemon_entry.alt_formes:
+      alt_field += f'{alt}<br>'
+  alt_field += "</div>"
+  dom.inner("Alt_formes", alt_field)
+
 def goToMon(dom):
   global CURRENT
   global SHINY
@@ -248,10 +301,13 @@ def goToMon(dom):
     pokemon = open(f"../serebii_normal_svg/{CURRENT}.svg").read()
     dom.inner("pokemon", pokemon)
     capped = poke_name[0].upper()+poke_name[1:]
-    dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
+    pokemon_entry = pokedex.pokemon_dict[capped]
+    set_fields(dom, pokemon_entry)
+    # dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
+    
   except:
     # pokemon = open(f"../svg_sprites/eevee.svg").read()
-    pokemon = open(f"../own_converted/eevee.svg").read()
+    pokemon = open(f"../serebii_normal_svg/eevee.svg").read()
     dom.inner("pokemon", pokemon)
     dom.begin("Name", f"<div>Sorry can't find what you're looking for</div>")
   
@@ -271,11 +327,13 @@ def shiny(dom):
     try:
       pokemon = open(f"../serebii_normal_svg/{CURRENT}.svg").read()
       dom.inner("pokemon", pokemon)
+      capped = CURRENT[0].upper()+CURRENT[1:]
+      pokemon_entry = pokedex.pokemon_dict[capped]
+      # dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
+      set_fields(dom, pokemon_entry)
     except:
-      pokemon = open(f"../svg_sprites/eevee.svg").read()
+      pokemon = open(f"../serebii_normal_svg/eevee.svg").read()
       dom.inner("pokemon", pokemon)
-    capped = CURRENT[0].upper()+CURRENT[1:]
-    dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
     
     dom.set_value("Input", "")
     dom.focus("Input")
@@ -286,11 +344,13 @@ def shiny(dom):
     try:
       pokemon = open(f"../serebii_shiny_svg/{CURRENT}_s.svg").read()
       dom.inner("pokemon", pokemon)
+      capped = CURRENT[0].upper()+CURRENT[1:]
+      pokemon_entry = pokedex.pokemon_dict[capped]
+      # dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
+      set_fields(dom, pokemon_entry)
     except:
-      pokemon = open(f"../svg_sprites/eevee.svg").read()
+      pokemon = open(f"../serebii_normal_svg/eevee.svg").read()
       dom.inner("pokemon", pokemon)
-    capped = CURRENT[0].upper()+CURRENT[1:]
-    dom.begin("Name", f"<div>{capped} (The {pokedex.pokemon_dict[capped].title})</div>")
     
     dom.set_value("Input", "")
     dom.focus("Input")
