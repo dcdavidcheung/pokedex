@@ -173,7 +173,7 @@ BODY = """
 """
 #<svg viewBox="0 0 60 55" width="200" height="100">
 POKEDEX_ENTRY = """
-<output id="Name"></output>
+<h1 id="Name"></h1>
 <fieldset>
   <span id="Typing"></span>
 </fieldset>
@@ -377,4 +377,4 @@ CALLBACKS = {
   "Shiny": shiny,
 }
 
-atlastk.launch(CALLBACKS)
+atlastk.launch(CALLBACKS, None, open("Head.html").read())
