@@ -180,7 +180,7 @@ POKEDEX_ENTRY = """
 <fieldset>
   <span id="Stats"></span>
 </fieldset>
-<fieldset style="background-color:#F5F5DC;">
+<fieldset style="background-color:#9dc1bb;">
   <span id="pokemon" style="width: 100px; height: 100px;"></span>
 </fieldset>
 <fieldset>
@@ -209,7 +209,8 @@ pokedex.make_dict()
 # pokemon = open("../test_vtracer/bulbasaur_own_build.svg").read()
 # print(pokemon[:150])
 def acConnect(dom):
-  dom.inner("", BODY)
+  # dom.inner("", BODY)
+  dom.inner("", open( "Main.html").read() )
   # pokemon = open("../svg_sprites/bulbasaur.svg").read()
   # pokemon = open("../test_vtracer/bulbasaur_custom_own_build.svg").read()
   # dom.inner("pokemon", pokemon)
