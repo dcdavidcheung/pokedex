@@ -158,46 +158,46 @@ def cap(s):
   return s[0].upper()+s[1:]
 
 cwd = os.getcwd()
-BODY = """
-<body style="background-color:#F5F5DC;">
-<fieldset style="background-color:#F5F5DC;">
-  <span id="pokemon" style="width: 100px; height: 100px;"></span>
-  <input id="Input" xdh:onevent="Enter" value=""/>
-  <button xdh:onevent="Enter">Enter name</button>
-  <hr/>
-  <fieldset>
-    <output id="Output">Type in pokemon name</output>
- </fieldset>
-</fieldset>
-</body>
-"""
+# BODY = """
+# <body style="background-color:#c5f1ea;">
+# <fieldset style="background-color:#c5f1ea;">
+#   <span id="pokemon" style="width: 100px; height: 100px;"></span>
+#   <input id="Input" xdh:onevent="Enter" value=""/>
+#   <button xdh:onevent="Enter">Enter name</button>
+#   <hr/>
+#   <fieldset>
+#     <output id="Output">Type in pokemon name</output>
+#  </fieldset>
+# </fieldset>
+# </body>
+# """
 #<svg viewBox="0 0 60 55" width="200" height="100">
-POKEDEX_ENTRY = """
-<h1 id="Name"></h1>
-<fieldset>
-  <span id="Typing"></span>
-</fieldset>
-<fieldset>
-  <span id="Stats"></span>
-</fieldset>
-<fieldset style="background-color:#9dc1bb;">
-  <span id="pokemon" style="width: 100px; height: 100px;"></span>
-</fieldset>
-<fieldset>
-  <input id="Input" xdh:onevent="Enter" value=""/>
-  <button xdh:onevent="Enter">Enter Name</button>
-  <button xdh:onevent="Shiny">Toggle Shiny</button>
-</fieldset>
-<fieldset>
-  <span id="Weaknesses"></span>
-</fieldset>
-<fieldset>
-  <span id="Resistances"></span>
-</fieldset>
-<fieldset>
-  <span id="Alt_formes"></span>
-</fieldset>
-"""
+# POKEDEX_ENTRY = """
+# <h1 id="Name"></h1>
+# <fieldset>
+#   <span id="Typing"></span>
+# </fieldset>
+# <fieldset>
+#   <span id="Stats"></span>
+# </fieldset>
+# <fieldset style="background-color:#9dc1bb;">
+#   <span id="pokemon" style="width: 100px; height: 100px;"></span>
+# </fieldset>
+# <fieldset>
+#   <input id="Input" xdh:onevent="Enter" value=""/>
+#   <button xdh:onevent="Enter">Enter Name</button>
+#   <button xdh:onevent="Shiny">Toggle Shiny</button>
+# </fieldset>
+# <fieldset>
+#   <span id="Weaknesses"></span>
+# </fieldset>
+# <fieldset>
+#   <span id="Resistances"></span>
+# </fieldset>
+# <fieldset>
+#   <span id="Alt_formes"></span>
+# </fieldset>
+# """
 # global CURRENT
 CURRENT = "bulbasaur"
 SHINY = False
@@ -292,7 +292,8 @@ def goToMon(dom):
   # poke_name = name.lower()
   # poke_name = "-".join(name.strip().lower().split(" ")) # Deal with name edge cases
   # CURRENT = poke_name
-  dom.inner("", POKEDEX_ENTRY)
+  dom.inner("", open( "Pokedex.html").read() )
+  # dom.inner("", POKEDEX_ENTRY)
 
   try:
     poke_name = "-".join(name.strip().lower().split(" ")) # Deal with name edge cases
@@ -323,7 +324,8 @@ def shiny(dom):
   global SHINY
   if SHINY:
     SHINY = False
-    dom.inner("", POKEDEX_ENTRY)
+    dom.inner("", open( "Pokedex.html").read() )
+    # dom.inner("", POKEDEX_ENTRY)
 
     try:
       pokemon = open(f"../serebii_normal_svg/{CURRENT}.svg").read()
@@ -340,7 +342,8 @@ def shiny(dom):
     dom.focus("Input")
   else:
     SHINY = True
-    dom.inner("", POKEDEX_ENTRY)
+    dom.inner("", open( "Pokedex.html").read() )
+    # dom.inner("", POKEDEX_ENTRY)
 
     try:
       pokemon = open(f"../serebii_shiny_svg/{CURRENT}_s.svg").read()
