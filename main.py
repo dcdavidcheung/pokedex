@@ -283,6 +283,8 @@ def set_fields(dom, pokemon_entry):
   alt_field += "</div>"
   dom.inner("Alt_formes", alt_field)
 
+# To display both the shiny forme and normal forme, just add the shiny form to
+# the pokemon variable, will show up side by side
 def goToMon(dom):
   global CURRENT
   global SHINY
@@ -375,10 +377,23 @@ def test(dom):
   dom.set_value("Input", "")
   dom.focus("Input")
 
+def blackGuess(dom):
+  dom.inner("", open( "Black.html").read() )
+
+def shinyGuess(dom):
+  dom.inner("", open( "Shiny.html").read() )
+
+def comparePokemon(dom):
+  dom.inner("", open( "Comparison.html").read() )
+
 CALLBACKS = {
   "": acConnect,
   "Enter": goToMon,
   "Shiny": shiny,
+  "BlackGuess": blackGuess,
+  "ShinyGuess": shinyGuess,
+  "Comparison": comparePokemon,
+  "Home": acConnect,
 }
 
 atlastk.launch(CALLBACKS, None, open("Head.html").read())
