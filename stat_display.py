@@ -11,11 +11,10 @@ dwg = svgwrite.Drawing('test.svg', size=(IMG_SIZE,IMG_SIZE))
 # dwg.add(dwg.polygon([(0,0), (10,10), (10,30)], fill='blue'))
 # dwg.save()
 
-# TODO: Create base image
-# TODO: Add text for stats at each corner
-# TODO: Use lines first stemming from circle
-# TODO: Figure out how to variate the shape in the middle to display stats
-# TODO: Paramertize output name to match other files
+# TODO: Modularize functions
+# TODO: Change parameters to be more extendible
+# TODO: Script it for all stats
+# TODO: Play around with the aesthetics
 
 # Serebii does it with a HTML polygon
 # <div class="polygon" style="clip-path: polygon(250px 168px,338.77px 198.75px,312.14px 285.88px,250px 347.38px,187.86px 285.88px,196.74px 219.25px)"></div> (Ex: Sawsbuck)
@@ -24,8 +23,9 @@ dwg = svgwrite.Drawing('test.svg', size=(IMG_SIZE,IMG_SIZE))
 
 # Need to grab the highest overall stat and have that be the scaling factor
 HIGHEST_STAT = 150
-# TEST = [100, 120,  130,  90,  60, 110]
-TEST = [100, 100, 100, 100, 100, 100]
+TEST = [100, 120,  130,  90,  60, 110]
+# TEST = [100, 100, 100, 100, 100, 100]
+# TEST = [150, 150, 150, 150, 150, 150]
 
 # input: stats -> expects list of stats in order of HP, ATK, DEF, SPA, SPD, SPE
 # output:      -> returns point list for SVG polygon
