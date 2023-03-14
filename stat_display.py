@@ -98,13 +98,46 @@ def gen_polygon(length):
     # print(ret_L)
     return ret_L
 
+# Add text to display stats
+def write_stats(length, dwg):
+    # HP
+    # Line from center straight up (SIZE/2,SIZE/2)->(SIZE/2,0)
+    # length = stats[0]/HIGHEST_STAT * SIZE/2
+    dwg.add(dwg.text(' HP: {}'.format(TEST[0]), insert=(int(IMG_SIZE/2),int(IMG_SIZE/2-length)), fill='red'))
+
+    # ATK
+    # Line from center 30 degrees above right perpendicular (SIZE/2,SIZE/2)->(SIZE-SIZE*SQRT(3)/4,SIZE/4)
+    # length = stats[1]/HIGHEST_STAT * SIZE/2
+    dwg.add(dwg.text('ATK: {}'.format(TEST[0]), insert=(int(IMG_SIZE/2+length*math.sqrt(3)/2),int(IMG_SIZE/2-length/2)), fill='red'))
+
+    # DEF
+    # Line from center 30 degrees below right perpendicular (SIZE/2,SIZE/2)->(SIZE-SIZE*SQRT(3)/4,3*SIZE/4)
+    # length = stats[2]/HIGHEST_STAT * SIZE/2
+    dwg.add(dwg.text('DEF: {}'.format(TEST[0]), insert=(int(IMG_SIZE/2+length*math.sqrt(3)/2),int(IMG_SIZE/2+length/2)), fill='red'))
+
+    # SPE
+    # Line from center straight down (SIZE/2,SIZE/2)->(SIZE/2,SIZE)
+    # length = stats[5]/HIGHEST_STAT * SIZE/2
+    dwg.add(dwg.text('SPE: {}'.format(TEST[0]), insert=(int(IMG_SIZE/2),int(IMG_SIZE/2+length)), fill='red'))
+
+    # SPD
+    # Line from center 30 degrees below left perpendicular (SIZE/2,SIZE/2)->(SIZE/2-SIZE*SQRT(3)/2,3*SIZE/4)
+    # length = stats[4]/HIGHEST_STAT * SIZE/2
+    dwg.add(dwg.text('SPD: {}'.format(TEST[0]), insert=(int(IMG_SIZE/2-length*math.sqrt(3)/2),int(IMG_SIZE/2+length/2)), fill='red'))
+
+    # SPA
+    # Line from center 30 degrees above left perpendicular (SIZE/2,SIZE/2)->(SIZE/2-SIZE*SQRT(3)/4,SIZE/4)
+    # length = stats[3]/HIGHEST_STAT * SIZE/2
+    dwg.add(dwg.text('SPA: {}'.format(TEST[0]), insert=(int(IMG_SIZE/2-length*math.sqrt(3)/2),int(IMG_SIZE/2-length/2)), fill='red'))
+
 def add_polygon(points):
     dwg.add(dwg.polygon(points, fill='gray'))
 
 dwg.add(dwg.polygon([(0,0),(IMG_SIZE,0),(IMG_SIZE,IMG_SIZE),(0,IMG_SIZE)], fill='beige'))
 dwg.add(dwg.polygon(gen_polygon_stats(TEST), fill='#64daec'))
 # Have text for stat and number here
-dwg.add(dwg.polygon(gen_polygon(((IMG_SIZE-SIZE)/2+SIZE)/2), stroke="red", fill="none"))
+# dwg.add(dwg.polygon(gen_polygon(((IMG_SIZE-SIZE)/2+SIZE)/2), stroke="red", fill="none"))
+write_stats(((IMG_SIZE-SIZE)/2+SIZE)/2, dwg)
 dwg.add(dwg.polygon(gen_polygon(SIZE/2), stroke="green", fill="none"))
 dwg.add(dwg.polygon(gen_polygon(SIZE*3/8), stroke="green", fill="none"))
 dwg.add(dwg.polygon(gen_polygon(SIZE/4), stroke="green", fill="none"))
